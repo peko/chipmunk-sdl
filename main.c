@@ -6,7 +6,7 @@
 #include <chipmunk/chipmunk_private.h>
 #include <chipmunk/chipmunk.h>
 
-#define SCREEN_W  640
+#define SCREEN_W  480
 #define SCREEN_H  480
 
 #define GRABBABLE_MASK_BIT (1<<31)
@@ -113,17 +113,17 @@ init(void) {
   cpShape *shape;
   
   // Create segments around the edge of the screen.
-  shape = cpSpaceAddShape(space, cpSegmentShapeNew(staticBody, cpv(0,0), cpv(0,480), 0.0f));
+  shape = cpSpaceAddShape(space, cpSegmentShapeNew(staticBody, cpv(0,0), cpv(0,SCREEN_H), 0.0f));
   cpShapeSetElasticity(shape, 1.0f);
   cpShapeSetFriction(shape, 1.0f);
   cpShapeSetFilter(shape, NOT_GRABBABLE_FILTER);
 
-  shape = cpSpaceAddShape(space, cpSegmentShapeNew(staticBody, cpv(640,0), cpv(640,480), 0.0f));
+  shape = cpSpaceAddShape(space, cpSegmentShapeNew(staticBody, cpv(SCREEN_W,0), cpv(SCREEN_W,SCREEN_H), 0.0f));
   cpShapeSetElasticity(shape, 1.0f);
   cpShapeSetFriction(shape, 1.0f);
   cpShapeSetFilter(shape, NOT_GRABBABLE_FILTER);
 
-  shape = cpSpaceAddShape(space, cpSegmentShapeNew(staticBody, cpv(0,480), cpv(640,480), 0.0f));
+  shape = cpSpaceAddShape(space, cpSegmentShapeNew(staticBody, cpv(0,SCREEN_H), cpv(SCREEN_W,SCREEN_H), 0.0f));
   cpShapeSetElasticity(shape, 1.0f);
   cpShapeSetFriction(shape, 1.0f);
   cpShapeSetFilter(shape, NOT_GRABBABLE_FILTER);
@@ -131,12 +131,14 @@ init(void) {
   // Add lots of boxes.
   for(int i=0; i<14; i++){
     for(int j=0; j<=i; j++){
+
       body = cpSpaceAddBody(space, cpBodyNew(1.0f, cpMomentForBox(1.0f, 30.0f, 30.0f)));
-      cpBodySetPosition(body, cpv(320+j*32 - i*16, i*32));
+      cpBodySetPosition(body, cpv(SCREEN_W/2+j*32 - i*16, i*32));
       
       shape = cpSpaceAddShape(space, cpBoxShapeNew(body, 30.0f, 30.0f, 0.5f));
       cpShapeSetElasticity(shape, 0.0f);
       cpShapeSetFriction(shape, 0.8f);
+    
     }
   }
   
