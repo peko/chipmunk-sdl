@@ -52,7 +52,7 @@ int main(void){
   screen = SDL_SetVideoMode(
     SCREEN_W, 
     SCREEN_H, 
-    24, SDL_SWSURFACE | SDL_DOUBLEBUF);
+    24, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
   if (screen == NULL) {
     return -1;
