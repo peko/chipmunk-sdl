@@ -34,8 +34,8 @@ static void      destroy(cpSpace *space);
 static void      MouseMove(SDL_Event* evt);
 static void      MouseDown(SDL_Event* evt);
 static void      MouseUp(SDL_Event* evt);
-void             DrawImpl(cpSpace *space);
-void             Cursor();
+static void      DrawImpl(cpSpace *space);
+static void      Cursor();
 
 static SDL_Surface *screen = 0;
 
@@ -78,7 +78,7 @@ int main(void){
 
     SDL_FillRect(screen, NULL, 0x000080); 
 
-    update(space, 0.02);
+    update(space, 0.01);
     DrawImpl(space);
 
     SDL_FreeSurface(screen);
@@ -94,7 +94,8 @@ finish:
   return 0;
 }
 
-void Cursor() {
+static void 
+Cursor() {
   cpVect new_point = cpvlerp(mouse_body->p, mouse_pnt, 0.25f);
   mouse_body->v = cpvmult(cpvsub(new_point, mouse_body->p), 60.0f);
   mouse_body->p = new_point;
@@ -129,13 +130,14 @@ init(void) {
   cpShapeSetFilter(shape, NOT_GRABBABLE_FILTER);
   
   // Add lots of boxes.
-  for(int i=0; i<14; i++){
+  for(int i=0; i<12; i++){
     for(int j=0; j<=i; j++){
 
-      body = cpSpaceAddBody(space, cpBodyNew(1.0f, cpMomentForBox(1.0f, 30.0f, 30.0f)));
-      cpBodySetPosition(body, cpv(SCREEN_W/2+j*32 - i*16, i*32));
+      float size = 20.0;
+      body = cpSpaceAddBody(space, cpBodyNew(1.0f, cpMomentForBox(1.0f, size, size*1.618)));
+      cpBodySetPosition(body, cpv(SCREEN_W/2+j*32 - i*16, i*size*2.0));
       
-      shape = cpSpaceAddShape(space, cpBoxShapeNew(body, 30.0f, 30.0f, 0.5f));
+      shape = cpSpaceAddShape(space, cpBoxShapeNew(body, size, size*1.618, 0.5f));
       cpShapeSetElasticity(shape, 0.0f);
       cpShapeSetFriction(shape, 0.8f);
     
@@ -338,7 +340,7 @@ ColorForShape(cpShape *shape, cpDataPointer data) {
   }
 }
 
-void
+static void
 DrawImpl(cpSpace *space) {
 
   cpSpaceDebugDrawOptions drawOptions = {
