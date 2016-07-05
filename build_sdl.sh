@@ -1,8 +1,8 @@
 #!/bin/bash
-clang main.c \
+clang chipmunk_sdl.c space.c \
 -Wall -g \
--o main \
+-o chipmunk_sdl \
 -lchipmunk \
 -lpthread -lm \
 -lSDL_gfx -lSDLmain -lSDL \
-&& ./main
+&& ./chipmunk_sdl
