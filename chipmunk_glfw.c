@@ -48,7 +48,6 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // app_draw(ratio);
-        
         glfwPollEvents();
         // gui_logic();
         // gui_draw();
